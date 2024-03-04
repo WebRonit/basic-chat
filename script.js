@@ -1,4 +1,4 @@
-const socket = io("http://localhost:3000")  // , { transports: ['websocket'] }
+const socket = io("https://simple-chat-room-75ta.onrender.com")  // , { transports: ['websocket'] }
 
 const form  = document.getElementById('msg-form');
 const msgInp  = document.getElementById('inp');
