@@ -230,12 +230,17 @@ main{
     background-color: #aeaaf0;
 }
 
-.left{
+.left, .chat-left{
     float: left;
     clear: both;
     /* margin-left: 20%; */
     border-radius:0 10px 10px 10px;
     background-color: rgb(240,240,240);
+}
+
+
+.chat-left{
+    background-color: #ff9191;
 }
 
 .temp{
@@ -245,11 +250,58 @@ main{
 #typing-status{
     display: none;
     position: fixed;
-    bottom: 55px;
+    bottom: 60px;
     font-size: 14px;
-    left: 41%;
-    color: gray;
+    margin: 0 auto;
+    padding: 3px;
+    border-radius: 5px;
+    background-color: lightgrey;
+    color: #404040;
+   
 }
+
+#typing-status p{
+    display: inline-block;
+    margin-right: 5px;
+}
+
+#typing-status .loader{
+    display: inline-block;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 25px;
+  aspect-ratio: 2;
+  --_g: no-repeat radial-gradient(circle closest-side,#0007 90%,#0000);
+  background: 
+    var(--_g) 0%   50%,
+    var(--_g) 50%  50%,
+    var(--_g) 100% 50%;
+  background-size: calc(100%/3) 50%;
+  animation: l3 1s infinite linear;
+}
+@keyframes l3 {
+    20%{background-position:0%   0%, 50%  50%,100%  50%}
+    40%{background-position:0% 100%, 50%   0%,100%  50%}
+    60%{background-position:0%  50%, 50% 100%,100%   0%}
+    80%{background-position:0%  50%, 50%  50%,100% 100%}
+}
+/*
+@keyframes fade{
+    0%{
+        color: #404040;
+    }
+
+    50%{
+        color: lightgrey;
+    }
+
+    100%{
+         color: #404040;
+    }
+}*/
+
 
 @media screen and (max-width:1000px){
 
@@ -280,8 +332,8 @@ main{
        width: 100%;
     }
 
-    #typing-status{
+   /* #typing-status{
         left: 10px;
-    }
+    }*/
 
 }

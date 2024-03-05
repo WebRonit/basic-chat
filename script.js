@@ -1,10 +1,11 @@
-const socket = io("https://simple-chat-room-75ta.onrender.com")  // , { transports: ['websocket'] }
+const socket = io("http://localhost:3000")  // , { transports: ['websocket'] }
 
 const form  = document.getElementById('msg-form');
 const msgInp  = document.getElementById('inp');
 const msgCont  = document.getElementById('chat-content');
 const sendBtn = document.getElementById('send-btn');
 const typingStatus = document.getElementById('typing-status');
+const typingName = document.getElementById('typing-name');
 
 
 const append = (userName, msg, pos) => {
@@ -22,6 +23,13 @@ const append = (userName, msg, pos) => {
 
     if(pos == "left"){
        triangle.style.borderTop = "15px solid rgb(240, 240, 240)";
+       msgBoxCont.style.float = "left"
+       msgBoxCont.appendChild(triangle);
+       msgBoxCont.appendChild(msgBox);
+    }
+
+    else if(pos == "chat-left"){
+       triangle.style.borderTop = "15px solid #ff9191";
        msgBoxCont.style.float = "left"
        msgBoxCont.appendChild(triangle);
        msgBoxCont.appendChild(msgBox);
@@ -67,12 +75,16 @@ msgInp.addEventListener('input', () => {
 form.onsubmit = (e) => {
     e.preventDefault()
     var msg = msgInp.value;
-    socket.emit('newMsg', msg);
-    socket.emit('notTyping');
-    append("You", msg, "right")
-    msgInp.value = "";
-    // console.log(time());
-    msgCont.scrollTop = msgCont.scrollHeight;
+    var spaceCheck = () => {return msg.trim() === '';}
+
+    if(!spaceCheck){
+       socket.emit('newMsg', msg);
+       socket.emit('notTyping');
+       append("You", msg, "right")
+       msgInp.value = "";
+       msgCont.scrollTop = msgCont.scrollHeight;
+    }
+    
 }
 
 function time() {
@@ -88,7 +100,7 @@ function time() {
 }
 
 socket.on('userTyping', data => {
-    typingStatus.innerText = data.name + " is typing...";
+    typingStatus.innerHTML = `<p id='typing-name'>${data.name}<div class="loader"></div></p>`;
     typingStatus.style.display = "block"
 });
 
@@ -101,3 +113,7 @@ socket.on('receive', data => {
     append(data.name, data.message, 'left');
     msgCont.scrollTop = msgCont.scrollHeight;
 });
+
+socket.on('userLeft', name => {
+    append(name," Left the chat", 'chat-left');
+})
