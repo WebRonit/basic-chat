@@ -1,9 +1,10 @@
-const socket = io("https://simple-chat-room-75ta.onrender.com")  // , { transports: ['websocket'] }
+const socket = io("http://localhost:3000")  // , { transports: ['websocket'] }
 
 const form  = document.getElementById('msg-form');
 const msgInp  = document.getElementById('inp');
 const msgCont  = document.getElementById('chat-content');
 const sendBtn = document.getElementById('send-btn');
+const typingStatus = document.getElementById('typing-status');
 
 
 const append = (userName, msg, pos) => {
@@ -20,7 +21,7 @@ const append = (userName, msg, pos) => {
     msgBox.innerHTML = `<p class='name'>${userName}<span>${time()}</span></p><p class='msg-txt'>${msg}</p>`;
 
     if(pos == "left"){
-       triangle.style.borderTop = "15px solid rgb(230, 180, 255)";
+       triangle.style.borderTop = "15px solid rgb(240, 240, 240)";
        msgBoxCont.style.float = "left"
        msgBoxCont.appendChild(triangle);
        msgBoxCont.appendChild(msgBox);
@@ -46,13 +47,32 @@ socket.on('userJoined', name => {
     append(name," joined the chat", 'left')
 });
 
+
+
+msgInp.addEventListener('input', () => {
+    if(msgInp.value != ''){
+        // console.log(name, "is typing..")
+        // typingStatus.style.display = "block";
+        socket.emit('typing', name);
+    }
+    else{
+         typingStatus.style.display = "none";
+         socket.emit('notTyping');
+    }
+});
+
+
+
+
 form.onsubmit = (e) => {
     e.preventDefault()
     var msg = msgInp.value;
     socket.emit('newMsg', msg);
+    socket.emit('notTyping');
     append("You", msg, "right")
     msgInp.value = "";
     // console.log(time());
+    msgCont.scrollTop = msgCont.scrollHeight;
 }
 
 function time() {
@@ -67,6 +87,17 @@ function time() {
     return `${h}:${m}${ampm}`
 }
 
+socket.on('userTyping', data => {
+    typingStatus.innerText = data.name + " is typing...";
+    typingStatus.style.display = "block"
+});
+
+socket.on('userTypingFalse', () => {
+    typingStatus.innerText ='';
+    typingStatus.style.display = "none";
+});
+
 socket.on('receive', data => {
     append(data.name, data.message, 'left');
-})
+    msgCont.scrollTop = msgCont.scrollHeight;
+});
