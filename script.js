@@ -76,8 +76,10 @@ form.onsubmit = (e) => {
     e.preventDefault()
     var msg = msgInp.value;
     var spaceCheck = () => {return msg.trim() === '';}
-
-    if(!spaceCheck){
+    function spaceCheck(str){
+        return str.trim() === '';
+    }
+    if(!spaceCheck(msg)){
        socket.emit('newMsg', msg);
        socket.emit('notTyping');
        append("You", msg, "right")
