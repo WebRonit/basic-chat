@@ -83,6 +83,7 @@ function appendImg(userName, txt, imgURL, pos){
 
     if(pos == 'left'){
        imgCont.style.float = 'left'
+       imgCont.style.backgroundColor = 'rgb(240, 240, 240)'
     }
 
     else{
