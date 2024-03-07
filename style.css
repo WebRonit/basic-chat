@@ -38,7 +38,7 @@ main{
 }
 
 #contacts nav{
-    /* display: flex; */
+/*  display: flex; */
     width: 100%;
     padding: 7px;
     background-color: rgb(230, 230, 250);
@@ -52,7 +52,15 @@ main{
     background-color: white;
 }
 
+#contacts nav #online{
+    display: flex;
+    padding: 5px;
+    width: auto;
+}
+
+
 #contacts nav .nav-side{
+    display: inline;
     float: right;
 }
 
@@ -149,7 +157,13 @@ main{
     fill:  #3c3c3c;
 }
 
-#chat-area .input-area #msg-form :nth-child(3){
+#chat-area .input-area #msg-form label{
+    margin-right: 7px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+#chat-area .input-area #msg-form :nth-child(4){
     transform: rotateZ(-45deg);
 }
 
@@ -174,6 +188,7 @@ main{
     border-top: 15px solid #aeaaf0;
     
 }
+
 
 .message{
     padding: 5px 10px;
@@ -203,13 +218,13 @@ main{
     
 }
 
-.message .name{
+.name{
     font-weight: bold;
 /*    margin-bottom: 5px;*/
     color: rgb(74, 15, 60);
 }
 
-.message .name span{
+.name span{
     margin-left: 5px;
     margin-top: 4px;
     float: right;
@@ -218,7 +233,7 @@ main{
     color: rgb(20, 20, 20, 1.0);
 }
 
-.message .msg-txt{
+.msg-txt{
     color: rgb(50, 50, 50);
     line-height: 20px;
 }
@@ -241,6 +256,23 @@ main{
 
 .chat-left{
     background-color: #ff9191;
+}
+
+
+.imgCont{
+    padding: 5px;
+    padding-top: 0;
+    margin-bottom: 10px;
+    max-width: 310px;
+    border-radius: 10px;
+    background-color: #aeaaf0;
+    clear: both;
+}
+
+
+.imgCont img{
+    width: 300px;
+    border-radius: 7px;
 }
 
 .temp{

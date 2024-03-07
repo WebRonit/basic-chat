@@ -1,12 +1,20 @@
-const socket = io("https://simple-chat-room-75ta.onrender.com")  //https://simple-chat-room-75ta.onrender.com
+const socket = io("http://localhost:3000") 
 
 const form  = document.getElementById('msg-form');
 const msgInp  = document.getElementById('inp');
+const imgInp  = document.getElementById('img-inp');
 const msgCont  = document.getElementById('chat-content');
 const sendBtn = document.getElementById('send-btn');
 const typingStatus = document.getElementById('typing-status');
 const typingName = document.getElementById('typing-name');
+const onlineCount = document.getElementById('online-count');
 
+let hasImg = false;
+var imgData;
+
+function scrollToBottom(){
+        msgCont.scrollTop = msgCont.scrollHeight;
+}
 
 const append = (userName, msg, pos) => {
     const msgBoxCont = document.createElement('div');
@@ -46,21 +54,59 @@ const append = (userName, msg, pos) => {
     msgCont.appendChild(msgBoxCont);
 }
 
+imgInp.onchange = function sendImage() {
+    const fileInput = imgInp;
+    const file = fileInput.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+            imgData = event.target.result;
+            hasImg = true;
+           // showImg.src = imgData
+            
+        }
+
+        reader.readAsDataURL(file);
+    }
+}
+
+
+function appendImg(userName, txt, imgURL, pos){
+    const imgCont = document.createElement('div');
+
+    imgCont.innerHTML = `<p class='name'>${userName}<span>${time()}</span></p><img src=${imgURL} alt='image' width='300'>
+                         <p class='msg-txt'>${txt}</p>`
+
+    imgCont.classList.add('imgCont');
+
+    if(pos == 'left'){
+       imgCont.style.float = 'left'
+    }
+
+    else{
+       imgCont.style.float = 'right'
+    }
+    
+    msgCont.appendChild(imgCont);
+}
+
 
 const name = prompt("Enter your name");
 socket.emit('newUserJoined', name);
 
 
-socket.on('userJoined', name => {
-    append(name," joined the chat", 'left')
+socket.on('userJoined', data => {
+    append(data.name," joined the chat", 'left')
+    onlineCount.innerText = data.totalUsers;
 });
 
 
 
 msgInp.addEventListener('input', () => {
+
     if(msgInp.value != ''){
-        // console.log(name, "is typing..")
-        // typingStatus.style.display = "block";
         socket.emit('typing', name);
     }
     else{
@@ -73,20 +119,36 @@ msgInp.addEventListener('input', () => {
 
 
 form.onsubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     var msg = msgInp.value;
-    var spaceCheck = () => {return msg.trim() === '';}
-    function spaceCheck(str){
-        return str.trim() === '';
+
+    if(!hasImg){
+   
+       function spaceCheck(str){
+           return str.trim() === '';
+       }
+   
+       if(!spaceCheck(msg)){
+          socket.emit('newMsg', msg);
+          socket.emit('notTyping');
+
+          append("You", msg, "right")
+
+          msgInp.value = "";
+       }
     }
-    if(!spaceCheck(msg)){
-       socket.emit('newMsg', msg);
-       socket.emit('notTyping');
-       append("You", msg, "right")
-       msgInp.value = "";
-       msgCont.scrollTop = msgCont.scrollHeight;
+
+    else{
+        appendImg('you', msg, imgData, 'right');
+        socket.emit('sendImage', {imgData: imgData, msg: msg});
+        hasImg = false;
+        msgInp.value = "";
+        socket.emit('notTyping');
+        scrollToBottom();
+
     }
-    
+
+     scrollToBottom();
 }
 
 function time() {
@@ -113,9 +175,20 @@ socket.on('userTypingFalse', () => {
 
 socket.on('receive', data => {
     append(data.name, data.message, 'left');
-    msgCont.scrollTop = msgCont.scrollHeight;
+    scrollToBottom();
 });
 
-socket.on('userLeft', name => {
-    append(name," Left the chat", 'chat-left');
+socket.on('newImage', data => {
+    appendImg(data.name, data.message, data.imgData, 'left');
+    scrollToBottom();
+    //console.log(imgSrc)
+});
+
+socket.on('userLeft', data => {
+    append(data.name," Left the chat", 'chat-left');
+    onlineCount.innerText = data.totalUsers;
 })
+
+socket.on('usersOnline', connectedUsers => {
+    onlineCount.innerText = connectedUsers;
+});
