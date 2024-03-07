@@ -179,7 +179,7 @@ main{
     border-left: 15px solid transparent;
     border-right: 0px solid transparent; 
     border-top: 15px solid rgb(240, 240, 240);
-    z-index: 1;
+    z-index: 0;
   }
 
 .triangle-right{
@@ -243,6 +243,7 @@ main{
     clear: both;
     border-radius:10px 0px 10px 10px;
     background-color: #aeaaf0;
+    transform-origin: bottom right;
 }
 
 .left, .chat-left{
@@ -272,6 +273,38 @@ main{
 
 .imgCont img{
     width: 300px;
+    border-radius: 7px;
+}
+
+#image-preview-cont{
+    display: none;
+    position: fixed;
+    min-height: 300px;
+    width: 310px;
+    padding: 5px;
+    padding-bottom: 0;
+    bottom: 60px;
+    left: 40%;
+    border-radius: 10px;
+    background-color: rgba(230, 230, 230, 0.5);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transform-origin: bottom left;
+    animation: apear .5s;
+    z-index: 9;
+}
+
+#image-preview-cont button{ 
+   height: 26px;
+   background-color: transparent;
+   border: none;
+   cursor: pointer;
+}
+
+#image-preview-cont img{
+    align-self: center;
+    justify-self: center;
     border-radius: 7px;
 }
 
@@ -319,20 +352,7 @@ main{
     60%{background-position:0%  50%, 50% 100%,100%   0%}
     80%{background-position:0%  50%, 50%  50%,100% 100%}
 }
-/*
-@keyframes fade{
-    0%{
-        color: #404040;
-    }
 
-    50%{
-        color: lightgrey;
-    }
-
-    100%{
-         color: #404040;
-    }
-}*/
 
 
 @media screen and (max-width:1000px){
@@ -353,6 +373,10 @@ main{
         margin-left: 0;
     }
 
+    #image-preview-cont{
+        left: 48.5%;
+    }
+
 }
 
 @media screen and (max-width:660px){
@@ -364,8 +388,16 @@ main{
        width: 100%;
     }
 
-   /* #typing-status{
-        left: 10px;
-    }*/
+   #image-preview-cont{
+      height: calc(100vh - 54px);
+      width: 100%;
+      left: 0;
+      bottom: 54px;
+      border-radius: 0;
+   }
+
+   #image-preview-cont img{
+    width: 100%;
+   }
 
 }

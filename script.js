@@ -3,6 +3,8 @@ const socket = io("https://simple-chat-room-75ta.onrender.com")
 const form  = document.getElementById('msg-form');
 const msgInp  = document.getElementById('inp');
 const imgInp  = document.getElementById('img-inp');
+const previewImgCont = document.getElementById('image-preview-cont')
+const previewImg = document.getElementById('preview-image')
 const msgCont  = document.getElementById('chat-content');
 const sendBtn = document.getElementById('send-btn');
 const typingStatus = document.getElementById('typing-status');
@@ -64,6 +66,8 @@ imgInp.onchange = function sendImage() {
         reader.onload = function(event) {
             imgData = event.target.result;
             hasImg = true;
+            previewImg.src = imgData
+            previewImgCont.style.display = 'block'
            // showImg.src = imgData
             
         }
@@ -72,6 +76,11 @@ imgInp.onchange = function sendImage() {
     }
 }
 
+function closePreview (){
+    previewImgCont.style.display = 'none'
+    previewImg.src = '';
+    hasImg = false;
+}
 
 function appendImg(userName, txt, imgURL, pos){
     const imgCont = document.createElement('div');
@@ -83,7 +92,6 @@ function appendImg(userName, txt, imgURL, pos){
 
     if(pos == 'left'){
        imgCont.style.float = 'left'
-       imgCont.style.backgroundColor = 'rgb(240, 240, 240)'
     }
 
     else{
@@ -142,6 +150,7 @@ form.onsubmit = (e) => {
     else{
         appendImg('you', msg, imgData, 'right');
         socket.emit('sendImage', {imgData: imgData, msg: msg});
+        previewImgCont.style.display = 'none'
         hasImg = false;
         msgInp.value = "";
         socket.emit('notTyping');
