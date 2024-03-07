@@ -1,4 +1,4 @@
-const socket = io("https://scoket-io-server.vercel.app")  //https://simple-chat-room-75ta.onrender.com
+const socket = io("https://simple-chat-room-75ta.onrender.com")  //https://simple-chat-room-75ta.onrender.com
 
 const form  = document.getElementById('msg-form');
 const msgInp  = document.getElementById('inp');
