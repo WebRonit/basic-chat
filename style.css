@@ -132,10 +132,6 @@ main{
     scroll-behavior: smooth;
 }
 
-#chat-area .input-area{
-    position: fixed;
-    width: 70%;
-}
 
 #chat-area .input-area #msg-form{
     padding: 7px;
@@ -373,10 +369,6 @@ main{
         width: 100%;
     }
 
-    #chat-area .input-area{
-        width: 60%;
-    }
-
     .left{
         margin-left: 0;
     }
@@ -394,10 +386,6 @@ main{
     }
     #chat-area{
        width: 100%;
-    }
-
-    #chat-area .input-area{
-        width: 100%;
     }
 
    #image-preview-cont{
