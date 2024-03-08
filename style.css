@@ -25,6 +25,19 @@
     cursor: pointer;
 }
 
+.overlay{
+    display: none;   
+}
+
+.active{
+    display: block;
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    z-index: 10;
+}
 
 main{
      display: flex;
@@ -139,6 +152,7 @@ main{
     justify-content: center;
     align-items: center;
     background-color: lavender;
+    z-index: 9;
 }
 
 
@@ -276,10 +290,19 @@ main{
     border-radius: 7px;
 }
 
+.view-image{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 11;
+}
+
 #image-preview-cont{
     display: none;
     position: fixed;
     min-height: 300px;
+    max-height: 500px;
     width: 310px;
     padding: 5px;
     padding-bottom: 0;
@@ -292,14 +315,21 @@ main{
     overflow: hidden;
     transform-origin: bottom left;
     animation: apear .5s;
-    z-index: 9;
+    z-index: 8;
 }
 
 #image-preview-cont button{ 
+   float: right;
    height: 26px;
+   margin-bottom: 5px;
    background-color: transparent;
    border: none;
+   backdrop-filter: drop-shadow(10px);
    cursor: pointer;
+}
+
+#image-preview-cont button svg{
+    backdrop-filter: drop-shadow(0 0 10px grey);
 }
 
 #image-preview-cont img{

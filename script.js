@@ -10,12 +10,19 @@ const sendBtn = document.getElementById('send-btn');
 const typingStatus = document.getElementById('typing-status');
 const typingName = document.getElementById('typing-name');
 const onlineCount = document.getElementById('online-count');
+const overlay = document.getElementById('overlay');
+
 
 let hasImg = false;
 var imgData;
 
 function scrollToBottom(){
         msgCont.scrollTop = msgCont.scrollHeight;
+}
+
+function viewImage(elem){
+        elem.classList.toggle('view-image');
+        overlay.classList.toggle('active')
 }
 
 const append = (userName, msg, pos) => {
@@ -65,9 +72,9 @@ imgInp.onchange = function sendImage() {
         console.log('uploding..')
         if (file.size > 500*1024) {
             new Compressor(file, {
-                quality: 0.7, 
-                maxWidth: 800,
-                maxHeight: 600,
+                quality: 0.9, 
+                maxWidth: 1080,
+                maxHeight: 720,
                 mimeType: 'image/jpeg', 
                 success: function(result) {
                     const reader = new FileReader();
@@ -111,7 +118,7 @@ function closePreview (){
 function appendImg(userName, txt, imgURL, pos){
     const imgCont = document.createElement('div');
 
-    imgCont.innerHTML = `<p class='name'>${userName}<span>${time()}</span></p><img src=${imgURL} alt='image' width='300'>
+    imgCont.innerHTML = `<p class='name'>${userName}<span>${time()}</span></p><img src=${imgURL} alt='image' width='300' onclick='viewImage(this)'>
                          <p class='msg-txt'>${txt}</p>`
 
     imgCont.classList.add('imgCont');
